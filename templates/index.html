@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Últimos Posts</h1>
+        
+        {% for post in posts %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">{{ post.titulo }}</h2>
+                <p class="text-muted">
+                    Por {{ post.autor }} em {{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}
+                </p>
+                <p class="card-text">{{ post.conteudo|safe }}</p>
+            </div>
+            
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            Nenhum post publicado ainda.
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Fazer uma Pergunta</h5>
+                <p class="card-text">Tem alguma dúvida? Envie sua pergunta para nós!</p>
+                <a href="{{ url_for('perguntas') }}" class="btn btn-primary">Fazer Pergunta</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1>Responder Pergunta</h1>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ pergunta.titulo }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    Por {{ pergunta.nome }} ({{ pergunta.email }})
+                </h6>
+                <p class="card-text">{{ pergunta.pergunta }}</p>
+            </div>
+        </div>
+        
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            
+            <div class="mb-3">
+                {{ form.resposta.label(class="form-label") }}
+                {{ form.resposta(class="form-control", rows=5) }}
+                {% for error in form.resposta.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.enviar(class="btn btn-primary") }}
+                <a href="{{ url_for('admin') }}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

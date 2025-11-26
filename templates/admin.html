@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Mais Informações</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Perguntas</h2>
+            <a href="{{ url_for('novo_post') }}" class="btn btn-success">Novo Post</a>
+        </div>
+        
+        {% for pergunta in perguntas %}
+        <div class="card mb-3 {% if pergunta.respondida %}border-success{% endif %}">
+            <div class="card-body">
+                <h5 class="card-title">{{ pergunta.titulo }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    Por {{ pergunta.nome }} ({{ pergunta.email }}) 
+                    em {{ pergunta.data_criacao.strftime('%d/%m/%Y %H:%M') }}
+                </h6>
+                <p class="card-text">{{ pergunta.pergunta }}</p>
+                
+                {% if pergunta.respondida %}
+                    <div class="alert alert-success">
+                        <strong>Resposta:</strong><br>
+                        {{ pergunta.resposta }}
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('responder_pergunta', pergunta_id=pergunta.id) }}" 
+                       class="btn btn-warning btn-sm">Responder</a>
+                {% endif %}
+                
+                <a href="{{ url_for('deletar_pergunta', pergunta_id=pergunta.id) }}" 
+                   class="btn btn-danger btn-sm" 
+                   onclick="return confirm('Tem certeza que deseja deletar esta pergunta?')">
+                    Deletar
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            Nenhuma pergunta recebida.
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="col-md-6">
+        <h2>Posts Publicados</h2>
+        
+        {% for post in posts %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.titulo }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    Por {{ post.autor }} em {{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}
+                </h6>
+                <p class="card-text">{{ post.conteudo[:100] }}...</p>
+                <a href="{{ url_for('deletar_post', post_id=post.id) }}" 
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Tem certeza que deseja deletar este post?')">
+                    Deletar
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            Nenhum post publicado.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
